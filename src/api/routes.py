@@ -20,3 +20,15 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
+
+@api.route('/signup', methods=['POST'])
+def handle_signup():
+    # TODO: Comprobar si el email ya esta registrado, dar error
+    # Sino, pues registrarlo
+    print(request.data)
+    response_body = {
+        "message": "user created successfully",
+        "data": "xxx"
+    }
+    return jsonify(response_body), 201
