@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
-export const SignUp = () => {
+export const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const endpointUrl = `${process.env.BACKEND_URL}/api/signup`;
+        const endpointUrl = `${process.env.BACKEND_URL}/api/login`;
 
         try {
             const response = await fetch(endpointUrl, {
@@ -23,17 +23,18 @@ export const SignUp = () => {
             const result = await response.json();
 
             if (response.ok) {
-                window.location.href = "/login"; // Redirigir al login
+                sessionStorage.setItem("token", result.token); // Guardar token en sessionStorage
+                window.location.href = "/private"; // Redirigir a la página privada
             } else {
-                setError(result.message || "Error occurred");
+                setError(result.message || "Login failed");
             }
         } catch (error) {
-            setError("Failed to register user");
+            setError("Failed to login");
         }
     };
 
     return (
-        <div className="signup-container">
+        <div className="login-container">
             <form onSubmit={handleSubmit}>
                 <input
                     type="email"
@@ -49,7 +50,7 @@ export const SignUp = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-                <button type="submit">Sign Up</button>
+                <button type="submit">Login</button>
             </form>
             {error && <p className="error-message">{error}</p>}
         </div>
